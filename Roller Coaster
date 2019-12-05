@@ -1,0 +1,54 @@
+import codecademylib3_seaborn
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# load rankings data here:
+golden_ticket_winners_wood = pd.read_csv('Golden_Ticket_Award_Winners_Wood.csv')
+golden_ticket_winners_steel = pd.read_csv('Golden_Ticket_Award_Winners_Steel.csv')
+print(golden_ticket_winners_wood)
+# write function to plot rankings over time for 1 roller coaster here:
+
+
+def rollercoasterrank(name, rankdf, park_name):
+  ranking = rankdf[(rankdf.Name == name) & (rankdf.Park == park_name)]
+  plt.plot(ranking['Year of Rank'], ranking['Rank'], marker='s')
+  ax = plt.subplot()
+  ax.invert_yaxis()
+  ax.set_yticks(ranking['Rank'])
+  plt.xlabel('Year')
+  plt.ylabel('Ranking')
+  plt.title('Roller Coaster Ranking By Year')
+  plt.show()
+
+
+#rollercoasterrank('El Toro', golden_ticket_winners_wood, 'Six Flags Great Adventure')
+
+
+
+
+
+
+
+plt.clf()
+
+# write function to plot rankings over time for 2 roller coasters here:
+def tworollercoasterrank(name1, name2, rankdf, park1, park2):
+  ranking1 = rankdf[(rankdf.Name == name1) & (rankdf.Park == park1)]
+  ranking2 = rankdf[(rankdf.Name == name2) & (rankdf.Park == park2)]
+  rankrange = pd.concat([ranking1['Rank'], ranking2['Rank']])
+  plt.plot(ranking1['Year of Rank'], ranking1['Rank'], marker='s')
+  plt.plot(ranking2['Year of Rank'], ranking2['Rank'], marker='*')
+  ax = plt.subplot()
+  ax.invert_yaxis()
+  ax.set_yticks(rankrange)
+  plt.xlabel('Year')
+  plt.ylabel('Ranking')
+  plt.title('Roller Coaster Ranking By Year')
+  plt.show()
+
+
+
+
+
+
+tworollercoasterrank('El Toro', 'Boulder Dash', golden_ticket_winners_wood, 'Six Flags Great Adventure', 'Lake Compounce')
