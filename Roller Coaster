@@ -51,4 +51,119 @@ def tworollercoasterrank(name1, name2, rankdf, park1, park2):
 
 
 
-tworollercoasterrank('El Toro', 'Boulder Dash', golden_ticket_winners_wood, 'Six Flags Great Adventure', 'Lake Compounce')
+#tworollercoasterrank('El Toro', 'Boulder Dash', golden_ticket_winners_wood, 'Six Flags Great Adventure', 'Lake Compounce')
+
+plt.clf()
+
+# write function to plot top n rankings over time here:
+def rollercoasterrankovertime(number, rankdf):
+  ranking = rankdf[(rankdf.Rank <= number)]
+  fig, ax = plt.subplots(figsize=(10, 10))
+  for element in set(ranking['Name']):
+    coaster_rankings = ranking[ranking['Name'] == element]
+    ax.plot(coaster_rankings['Year of Rank'], coaster_rankings['Rank'], label=element)
+  ax.invert_yaxis()
+  ax.set_yticks(ranking['Rank'])
+  plt.xlabel('Year')
+  plt.ylabel('Ranking')
+  plt.title('Roller Coaster Ranking By Year')
+  plt.legend(loc=4)
+  plt.show()
+
+
+
+
+#rollercoasterrankovertime(5, golden_ticket_winners_wood)
+
+
+
+
+plt.clf()
+
+# load roller coaster data here:
+rollercoasters = pd.read_csv('roller_coasters.csv')
+print(rollercoasters[rollercoasters['num_inversions'] > 0].head(100))
+
+# write function to plot histogram of column values here:
+def histogramgenerator(dataframe, columnname):
+  if columnname == 'height':
+    dataframe = dataframe[dataframe['height'] <= 140]
+  plt.hist(dataframe[columnname].dropna())
+  plt.title('Histogram of coaster {}'.format(columnname))
+  plt.xlabel(columnname)
+  plt.ylabel('number of coasters')
+  plt.show()
+  
+  
+
+
+#histogramgenerator(rollercoasters, 'height')
+
+
+
+
+
+plt.clf()
+
+# write function to plot inversions by coaster at a park here:
+def bargenerator(dataframe, parkname):
+  parkframe = dataframe[dataframe['park'] == parkname]
+  names = parkframe['name']
+  inversions = parkframe['num_inversions']
+  plt.bar(range(len(inversions)), inversions)
+  ax = plt.subplot()
+  ax.set_xticks(range(len(names)))
+  ax.set_xticklabels(names,rotation=90)
+  plt.title('Number of Inversions Per Coaster at {}'.format(parkname))
+  plt.xlabel('Roller Coaster')
+  plt.ylabel('# of Inversions')
+  plt.show()
+
+
+#bargenerator(rollercoasters, 'Parc Asterix')
+
+
+
+
+
+plt.clf()
+    
+# write function to plot pie chart of operating status here:
+
+def piegenerator(dataframe):
+  operational = dataframe[dataframe['status'] == 'status.operating']
+  closed = dataframe[dataframe['status'] == 'status.closed.definitely']
+  status_counts = [len(operational), len(closed)]
+  plt.pie(status_counts, autopct='%0.2f%%', labels=status_counts)
+  plt.legend(['Operational', 'Closed'])
+  plt.axis('equal')
+  plt.show()
+
+#piegenerator(rollercoasters)
+
+
+
+
+
+
+plt.clf()
+  
+# write function to create scatter plot of any two numeric columns here:
+def scattercoaster(dataframe, column1, column2):
+  if column1 == 'height' or column2 == 'height':
+    dataframe = dataframe[dataframe['height'] < 140]
+  plt.scatter(dataframe[column1], dataframe[column2])
+  plt.xlabel(column1)
+  plt.ylabel(column2)
+  plt.title('Scatter Comparison Between {} and {}'.format(column1, column2))
+  plt.show()
+
+
+#scattercoaster(rollercoasters, 'speed', 'height')
+
+
+
+
+
+
+plt.clf()
