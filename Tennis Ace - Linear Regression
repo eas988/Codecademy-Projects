@@ -1,0 +1,84 @@
+import codecademylib3_seaborn
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# load and investigate the data here:
+df = pd.read_csv('tennis_stats.csv')
+print(df.dtypes)
+
+# perform exploratory analysis here:
+#plt.scatter(df['ReturnGamesPlayed'], df['Wins'])
+#plt.scatter(df['ServiceGamesPlayed'], df['Winnings'])
+#plt.scatter(df['Losses'], df['Winnings'])
+#plt.scatter(df['BreakPointsOpportunities'], df['Winnings'])
+#plt.scatter(df['Wins'], df['Winnings'])
+plt.show()
+plt.clf()
+
+## perform single feature linear regressions here:
+#features = df[['ServiceGamesPlayed']]
+#outcome = df[['Winnings']]
+
+#features = df[['ReturnGamesPlayed']]
+#outcome = df[['Wins']]
+
+features = df[['BreakPointsOpportunities']]
+outcome = df[['Winnings']]
+
+features_train, features_test, outcome_train, outcome_test = train_test_split(features, outcome, train_size = 0.8)
+
+model = LinearRegression()
+model.fit(features_train, outcome_train)
+
+model.score(features_test, outcome_test)
+
+prediction = model.predict(features_test)
+plt.scatter(outcome_test, prediction, alpha=0.4)
+plt.title('Predicted Winnings vs Actual, One Feature')
+plt.xlabel('Actual')
+plt.ylabel('Predicted')
+plt.show()
+
+## perform two feature linear regressions here:
+
+features2 = df[['BreakPointsOpportunities', 'ServiceGamesPlayed']]
+outcome2 = df[['Winnings']]
+
+features_train2, features_test2, outcome_train2, outcome_test2 = train_test_split(features2, outcome2, train_size = 0.8)
+
+model2 = LinearRegression()
+model2.fit(features_train2, outcome_train2)
+
+model2.score(features_test2, outcome_test2)
+
+prediction2 = model2.predict(features_test2)
+plt.scatter(outcome_test2, prediction2, alpha=0.4)
+plt.title('Predicted Winnings vs Actual, Two Features')
+plt.xlabel('Actual')
+plt.ylabel('Predicted')
+plt.show()
+
+## perform multiple feature linear regressions here:
+features3 = df[['FirstServe','FirstServePointsWon','FirstServeReturnPointsWon',
+'SecondServePointsWon','SecondServeReturnPointsWon','Aces',
+'BreakPointsConverted','BreakPointsFaced','BreakPointsOpportunities',
+'BreakPointsSaved','DoubleFaults','ReturnGamesPlayed','ReturnGamesWon',
+'ReturnPointsWon','ServiceGamesPlayed','ServiceGamesWon','TotalPointsWon',
+'TotalServicePointsWon']]
+outcome3 = df[['Winnings']]
+
+features_train3, features_test3, outcome_train3, outcome_test3 = train_test_split(features3, outcome3, train_size = 0.8)
+
+model3 = LinearRegression()
+model3.fit(features_train3, outcome_train3)
+
+model3.score(features_test3, outcome_test3)
+
+prediction3 = model3.predict(features_test3)
+plt.scatter(outcome_test3, prediction3, alpha=0.4)
+plt.title('Predicted Winnings vs Actual, Multiple Feature')
+plt.xlabel('Actual')
+plt.ylabel('Predicted')
+plt.show()
