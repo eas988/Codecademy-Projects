@@ -1,0 +1,64 @@
+// Returns a random DNA base
+const returnRandBase = () => {
+  const dnaBases = ['A', 'T', 'C', 'G']
+  return dnaBases[Math.floor(Math.random() * 4)] 
+}
+
+// Returns a random single strand of DNA containing 15 bases
+const mockUpStrand = () => {
+  const newStrand = []
+  for (let i = 0; i < 15; i++) {
+    newStrand.push(returnRandBase())
+  }
+  return newStrand
+}
+
+
+function pAequorFactory(number, arrayDNA){
+  return {
+    number : number,
+    dna : arrayDNA,
+    mutate() { // Randomly selects an element from a DNA sequence of 15 bases, alters that base to a randomly selected different base
+      let baseIndex = Math.floor(Math.random() * 15)
+      let baseValue = this.dna[baseIndex]
+      const dnaBases = ['A', 'T', 'C', 'G']
+      let mutateBases = dnaBases.filter(base => base != baseValue)
+      this.dna[baseIndex] = mutateBases[Math.floor(Math.random() * 3)]
+      return this.dna
+    },
+    compareDNA(pAequorToCompare) { // Compares the DNA sequence of this and another pAequor object and states the percentage of matches in common. Assumes same length of DNA strands created from organism factory
+      let matchingDNA = []
+      for(let i=0; i<this.dna.length; i++){
+        if(this.dna[i] === pAequorToCompare.dna[i]){
+          matchingDNA.push(this.dna[i])
+        }
+      }
+      console.log('Amount of matching DNA: ' + (matchingDNA.length / this.dna.length * 100).toFixed(2) + '%')
+    },
+    willLikelySurvive() { // Determines if pAequor's DNA is made up of at least 60% 'C' or 'G' bases; this indicates a likelier chance of survival
+      let survivalBase = []
+      for (let i=0; i<this.dna.length; i++){
+        if(this.dna[i] === 'C' || this.dna[i] === 'G'){
+          survivalBase.push(this.dna[i])
+        }
+      }
+      if(survivalBase.length / this.dna.length * 100 >= 60){
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+};
+
+//Generates 30 instances of pAequor that are likely to survive in their natural environment
+let survivingOrganisms = []
+let specimenNum = 1
+while(survivingOrganisms.length < 30){  
+  let potentialSpecimen = pAequorFactory(specimenNum, mockUpStrand())
+  if(potentialSpecimen.willLikelySurvive() === true){
+    survivingOrganisms.push(potentialSpecimen)    
+  }
+  specimenNum++
+}
+console.log(survivingOrganisms)
