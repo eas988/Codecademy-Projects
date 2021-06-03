@@ -62,3 +62,20 @@ while(survivingOrganisms.length < 30){
   specimenNum++
 }
 console.log(survivingOrganisms)
+
+
+//Determines of the 30 hardy specimens generated, which two are the closest match genetically
+let winners = []
+let bestMatch = 0
+for(let i = 0; i < survivingOrganisms.length - 1; i++){
+  for(let j = i + 1; j < survivingOrganisms.length; j++){
+    let comparedOrganisms = survivingOrganisms[i].compareDNA(survivingOrganisms[j])
+    if(comparedOrganisms > bestMatch){
+      winners = [survivingOrganisms[i], survivingOrganisms[j]]
+      bestMatch = comparedOrganisms
+    }
+  }
+};
+console.log(winners)
+console.log(bestMatch)
+
